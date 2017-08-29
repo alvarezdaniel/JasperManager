@@ -164,6 +164,8 @@ namespace JasperManager
 
             try
             {
+                System.IO.File.WriteAllText("File.json", Descriptor.ToJson());
+
                 string response = web.UploadString(url, method.ToString(), Descriptor.ToJson());
 
                 return new JasperResult(url, null, JasperStatus.Success, response);
@@ -191,6 +193,8 @@ namespace JasperManager
 
             try
             {
+                System.IO.File.WriteAllText("DeployReport.json", Descriptor.ToJson());
+
                 string response = web.UploadString(url, method.ToString(), Descriptor.ToJson());
 
                 return new JasperResult(url, null, JasperStatus.Success, response);

@@ -11,7 +11,7 @@ namespace JasperManagerTest
     {
         public JasperClient GetClient()
         {
-            JasperConfig config = new JasperConfig("localhost");
+            JasperConfig config = new JasperConfig("S059D307");
             JasperAuthorization auth = new JasperAuthorization("jasperadmin", "jasperadmin");
             JasperClient report = new JasperClient(config, auth);
 
@@ -133,5 +133,35 @@ namespace JasperManagerTest
             Assert.AreEqual(result.GetStatus(), JasperStatus.Success, result.GetMessage());
         }
 
+        [TestMethod]
+        public void UploadJrxmlFile2()
+        {
+            JasperClient client = GetClient();
+
+            byte[] reportFile = null;
+            using (StreamReader read = new StreamReader(@"..\..\..\JasperManagerTest\Files\Ejemplo2.jrxml"))
+            {
+                reportFile = new byte[read.BaseStream.Length];
+                read.BaseStream.Read(reportFile, 0, (int)read.BaseStream.Length);
+            }
+
+            var file = new JrxmlFile("Ejemplo2", "jrxml");
+            file.ContentFile(reportFile);            
+
+            JasperDescriptor descriptor = new JasperDescriptor();
+
+            descriptor.Label = "Ejemplo2";
+            descriptor.AlwaysPromptControls = false;
+            descriptor.ControlsLayout = ControlsLayout.inPage.ToString();
+            descriptor.DataSource = new JasperCollection<JasperDataSourceReference> { new JasperDataSourceReference("/datasources/OBO_Reporting") };
+            //descriptor2.Jrxml = new JasperCollection<JrxmlFileReference> { new JrxmlFileReference("/reports/Uploads/Ejemplo2_jrxml") };
+            descriptor.Jrxml = file;
+
+            JasperResult result = client.DeployReport("/reports/Uploads", descriptor);
+
+            Assert.AreEqual(result.GetStatus(), JasperStatus.Success, result.GetMessage());
+        }
     }
 }
+
+

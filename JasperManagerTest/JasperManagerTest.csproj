@@ -60,6 +60,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Files\Ejemplo2.jrxml" />
     <None Include="Files\Exemplo.jrxml" />
     <None Include="ApiTeste.orderedtest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
